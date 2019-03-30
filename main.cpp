@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
     ht.set_output_filename(output_file);
     vector<CharFrequency> *s = new vector<CharFrequency>;
     ht.encode(*s);
+    delete s;
     return 0;
 }
 

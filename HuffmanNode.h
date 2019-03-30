@@ -3,7 +3,6 @@
 #include <memory>
 
 struct CharFrequency {
-public:
   char c;
   double freq;
 //  std::string code;
@@ -20,10 +19,15 @@ public: // methods
                   const std::shared_ptr<HuffmanNode>& b); //comparing two nodes
 };
 
-struct compare {
-  bool operator()(const std::shared_ptr<HuffmanNode>& lhs,
+class compare {
+/*  bool operator()(const std::shared_ptr<HuffmanNode>& lhs,
                   const std::shared_ptr<HuffmanNode>& rhs) const {
     return lhs->compareNode(lhs, rhs); //lhs->frequency > rhs->frequency;
   }
-
+*/
+public:
+bool operator()(const std::shared_ptr<HuffmanNode>& lhs,
+                  const std::shared_ptr<HuffmanNode>& rhs) const {
+    return lhs->frequency > rhs->frequency;
+}
 };

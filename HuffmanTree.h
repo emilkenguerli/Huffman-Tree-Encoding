@@ -13,6 +13,8 @@ class HuffmanTree {
   std::string output_file;
   unsigned int source_bytes;
   int unique_chars;
+  std::unordered_map<char, string> code_table;
+
 public:  
   HuffmanTree();
   ~HuffmanTree();
@@ -23,6 +25,4 @@ public:
   void assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
                        const unique_ptr<string>& code,
                        std::unordered_map<char, string>* huffman_encoding);
-//  void assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
-//                       const string &str);
 };	

@@ -35,7 +35,7 @@ double HuffmanTree::encode(vector<CharFrequency> &symbols) {
 //  if (out_file.is_open())
 //    out_file.close();
 //  out_file.open(output_file, std::ios::binary|std::ios::out);
-//  temp_file.open(input_file, std::ios::binary|std::ios::in);
+  temp_file.open(input_file, std::ios::binary|std::ios::in);
 
 // count number of occurences of each letter and store it in unordered_map
   std::unordered_map<char, int> map;
@@ -59,24 +59,21 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 
   // Start with assigning each symbol into candidates.
   priority_queue<shared_ptr<HuffmanNode>, vector<shared_ptr<HuffmanNode>>, compare> candidates;
-  int unique_symbols = 0;
 
   for (CharFrequency &s : symbols) {
     shared_ptr<CharFrequency> p(new CharFrequency(s));
     candidates.emplace(new HuffmanNode{(double)s.freq, p, nullptr, nullptr});
-    unique_symbols++;
   }
 
-  cout << "unique_symbols = " << unique_symbols << endl;
   cout << "size=" << candidates.size() << endl;
 
   // use temporary queue to print out candidates
-  priority_queue<shared_ptr<HuffmanNode>, vector<shared_ptr<HuffmanNode>>, compare> temp = candidates;
+/*  priority_queue<shared_ptr<HuffmanNode>, vector<shared_ptr<HuffmanNode>>, compare> temp = candidates;
   while (!temp.empty()) {
     std::cout << "candidates=" << temp.top()->charfreq->c << "Then="<< temp.top()->charfreq->freq << std::endl;
     temp.pop();
   }
-
+*/
   // Combining two nodes until there is only one node left.
   while (candidates.size() > 1) {
     shared_ptr<HuffmanNode> left = candidates.top();
@@ -85,44 +82,38 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
     candidates.pop();
     candidates.emplace(new HuffmanNode{
         left->frequency + right->frequency, nullptr, left, right});
-    cout << "Count";
   }
-
-/*  string s1;  
-  assign_huffman_codes(candidates.top(), s1);
-  cout << "string = " << s1 << endl;
-  // use temporary queue to print out candidates
-  priority_queue<shared_ptr<HuffmanNode>, vector<shared_ptr<HuffmanNode>>, compare> temp1 = candidates;
-  cout <<"Size = " << temp1.size() << endl;
-*/
-
-  std::unordered_map<char, string> huffman_encoding;
- 
+   
  // Traverses the Hoffman tree and assign codes to nodes.
-  assign_huffman_codes(candidates.top(), std::make_unique<string>(), &huffman_encoding);
 
-  cout << "Huffman_encoding = " << endl;
-  for (auto& it: huffman_encoding) {
+  assign_huffman_codes(candidates.top(), std::make_unique<string>(), &code_table);
+
+  cout << "code_table = " << endl;
+  for (auto& it: code_table) {
     cout << it.first << it.second << endl;
+  }
+  in_file.close();
+
+  std::unordered_map<char, string>::iterator it;
+
+  while (!temp_file.eof())
+  {
+    temp_file.get(c);
+    it = code_table.find(c);
+	if (it != code_table.end())
+	{
+		std::cout << "Element Found - ";
+		std::cout << it->first << "::" << it->second << std::endl;
+	}
+	else
+	{
+		std::cout << "Element Not Found" << std::endl;
+	}
+
   }
   return 1;
 }
-/*
-void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
-                       const string &str) {
-  if (binary_tree) {
-    if (binary_tree->charfreq) {
-      // leaf node
-      binary_tree->charfreq->code = str;
-      cout << "leaf node = " << str << endl;
-    } else {  // non-leaf node
-      assign_huffman_codes(binary_tree->left, str + '0');
-      assign_huffman_codes(binary_tree->right, str + '1');
-//      cout << "non-leaf node = " << *code << endl;
-    }
-  }
-}
-*/
+
 void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
                        const unique_ptr<string>& code,
                        std::unordered_map<char, string>* huffman_encoding) {
@@ -142,6 +133,23 @@ void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tre
   }
 }
 
+void HuffmanTree::CompressData(int node, int child)
+{
+/*    if (h_tree[node].GetRoot() != -1)
+    {
+        bit_count++;
+        compress_byte(h_tree[node].GetRoot(), node);
+    }
+    if (child != -1)
+    {
+        if (child == h_tree[node].GetRight())
+                output_bit(0);
+            else if(child == h_tree[node].GetLeft())
+                output_bit(1);
+    }
+*/}
+
+
 void HuffmanTree::set_input_filename(std::string filename, std::string extname)
 {
     input_file = filename;
@@ -153,7 +161,5 @@ void HuffmanTree::set_output_filename(std::string filename)
     output_file = filename;
 }
 
-//double HuffmanEncodingWrapper(vector<huffman::CharFrequency> symbols) {
-//  return huffman::HuffmanEncoding(&symbols);
-//}
+
 
