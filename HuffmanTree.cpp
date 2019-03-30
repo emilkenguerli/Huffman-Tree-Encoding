@@ -30,11 +30,12 @@ double HuffmanTree::encode(vector<CharFrequency> &symbols) {
   unsigned char uc;
   std::ifstream in_file;
   std::ifstream temp_file;
-//  output_file += ext_name; // add extension to output file name
+  std::ofstream out_file;
+  output_file += extension; // add extension to output file name
   in_file.open(input_file, std::ios::binary|std::ios::in);
 //  if (out_file.is_open())
 //    out_file.close();
-//  out_file.open(output_file, std::ios::binary|std::ios::out);
+  out_file.open(output_file, std::ios::binary|std::ios::out);
   temp_file.open(input_file, std::ios::binary|std::ios::in);
 
 // count number of occurences of each letter and store it in unordered_map
@@ -95,6 +96,8 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
   in_file.close();
 
   std::unordered_map<char, string>::iterator it;
+  std::string buffer;
+  int count = 0;
 
   while (!temp_file.eof())
   {
@@ -104,6 +107,8 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 	{
 		std::cout << "Element Found - ";
 		std::cout << it->first << "::" << it->second << std::endl;
+		buffer += it->first + it->second;
+		count ++;
 	}
 	else
 	{
@@ -111,6 +116,15 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 	}
 
   }
+  const char* bytes = buffer.c_str();
+  out_file << count << std::endl;
+
+  for(int i = 0; i < buffer.length();i++){
+	out_file << bytes[i];
+  }
+
+
+
   return 1;
 }
 
