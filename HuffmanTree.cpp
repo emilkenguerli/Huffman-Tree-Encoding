@@ -19,7 +19,37 @@ using std::vector;
 // namespace is used in order to escape BinaryTreeNode symbol
 using namespace std;
 
-HuffmanTree::HuffmanTree() {
+HuffmanTree::HuffmanTree(void) : extension(".hdr"), output_file("output"){}
+
+HuffmanTree::HuffmanTree(std::string inputfile,std::string outputfile){
+	this -> extension = ".hdr";
+  	this -> input_file = inputfile;
+	this -> output_file = outputfile;
+}
+
+HuffmanTree::HuffmanTree(const HuffmanTree &hf2){
+	this -> input_file = hf2.input_file;
+	this -> output_file = hf2.output_file;
+}
+
+HuffmanTree::HuffmanTree(HuffmanTree &&hf2){
+	this -> input_file = hf2.input_file;
+	this -> output_file = hf2.output_file;
+	hf2.input_file = nullptr;
+	hf2.output_file = nullptr;
+}
+
+HuffmanTree& HuffmanTree::operator=(const HuffmanTree& hf){
+	HuffmanTree tmp(hf);
+	std::swap(this -> input_file, tmp.input_file);
+	std::swap(this -> output_file, tmp.output_file);
+	return *this;
+}
+
+HuffmanTree& HuffmanTree::operator=(HuffmanTree &&hf){
+	std::swap(this -> input_file, hf.input_file);
+	std::swap(this -> output_file, hf.output_file);
+	return *this;
 }
 
 HuffmanTree::~HuffmanTree() {
@@ -31,11 +61,16 @@ double HuffmanTree::encode(vector<CharFrequency> &symbols) {
   std::ifstream in_file;
   std::ifstream temp_file;
   std::ofstream out_file;
+  std::ofstream b_out_file;
+
   output_file += extension; // add extension to output file name
+  std::cout << "Output filename: " << output_file << std::endl;
   in_file.open(input_file, std::ios::binary|std::ios::in);
-//  if (out_file.is_open())
-//    out_file.close();
+
   out_file.open(output_file, std::ios::binary|std::ios::out);
+
+  output_file += ".bin";
+  b_out_file.open(output_file, std::ios::binary|std::ios::out);
   temp_file.open(input_file, std::ios::binary|std::ios::in);
 
 // count number of occurences of each letter and store it in unordered_map
@@ -63,7 +98,8 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 
   for (CharFrequency &s : symbols) {
     shared_ptr<CharFrequency> p(new CharFrequency(s));
-    candidates.emplace(new HuffmanNode{(double)s.freq, p, nullptr, nullptr});
+    //candidates.emplace(new HuffmanNode{(double)s.freq, p, nullptr, nullptr});
+	candidates.emplace(new HuffmanNode((double)s.freq, p, nullptr, nullptr));
   }
 
   cout << "size=" << candidates.size() << endl;
@@ -81,8 +117,8 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
     candidates.pop();
     shared_ptr<HuffmanNode> right = candidates.top();
     candidates.pop();
-    candidates.emplace(new HuffmanNode{
-        left->frequency + right->frequency, nullptr, left, right});
+    //candidates.emplace(new HuffmanNode{left->frequency + right->frequency, nullptr, left, right});
+	candidates.emplace(new HuffmanNode(left->frequency + right->frequency, nullptr, left, right));
   }
    
  // Traverses the Hoffman tree and assign codes to nodes.
@@ -97,6 +133,7 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 
   std::unordered_map<char, string>::iterator it;
   std::string buffer;
+  std::string bits;
   int count = 0;
 
   while (!temp_file.eof())
@@ -105,9 +142,10 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
     it = code_table.find(c);
 	if (it != code_table.end())
 	{
-		std::cout << "Element Found - ";
-		std::cout << it->first << "::" << it->second << std::endl;
+//		std::cout << "Element Found - ";
+//		std::cout << it->first << "::" << it->second << std::endl;
 		buffer += it->first + it->second;
+                bits += it->second;
 		count ++;
 	}
 	else
@@ -117,13 +155,27 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 
   }
   const char* bytes = buffer.c_str();
-  out_file << count << std::endl;
+  out_file << count;
 
   for(int i = 0; i < buffer.length();i++){
 	out_file << bytes[i];
   }
+  if (out_file.is_open())
+    out_file.close();
+const std::size_t n = bits.length();
+std::vector<char> byteArray(n / 8);
+b_out_file << count;
 
-
+for (std::size_t i = 0; i < n / 8; ++i) {
+  for (std::size_t j = 0; j < 8; ++j) {
+    if (bits[i * 8 + j] == '1') {
+      byteArray[i] |= 1 << j;
+    }
+  }
+  b_out_file << byteArray[i];
+}
+  if (b_out_file.is_open())
+    b_out_file.close();
 
   return 1;
 }
@@ -147,24 +199,8 @@ void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tre
   }
 }
 
-void HuffmanTree::CompressData(int node, int child)
-{
-/*    if (h_tree[node].GetRoot() != -1)
-    {
-        bit_count++;
-        compress_byte(h_tree[node].GetRoot(), node);
-    }
-    if (child != -1)
-    {
-        if (child == h_tree[node].GetRight())
-                output_bit(0);
-            else if(child == h_tree[node].GetLeft())
-                output_bit(1);
-    }
-*/}
 
-
-void HuffmanTree::set_input_filename(std::string filename, std::string extname)
+/*void HuffmanTree::set_input_filename(std::string filename, std::string extname)
 {
     input_file = filename;
     extension = extname;
@@ -173,7 +209,7 @@ void HuffmanTree::set_input_filename(std::string filename, std::string extname)
 void HuffmanTree::set_output_filename(std::string filename)
 {
     output_file = filename;
-}
+}*/
 
 
 

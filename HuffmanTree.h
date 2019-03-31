@@ -1,5 +1,8 @@
 // HuffmanTree.h: declaration of HuffmanTree class.
 
+#ifndef HUFFMANTREE_H
+#define HUFFMANTREE_H
+
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -16,7 +19,12 @@ class HuffmanTree {
   std::unordered_map<char, string> code_table;
 
 public:  
-  HuffmanTree();
+  HuffmanTree(void);
+  HuffmanTree(std::string inputfile,std::string outputfile);
+  HuffmanTree(const HuffmanTree &hf2);
+  HuffmanTree(HuffmanTree &&hf2);
+  HuffmanTree& operator=(const HuffmanTree &hf);
+  HuffmanTree& operator=(HuffmanTree &&hf);
   ~HuffmanTree();
   void CompressData(int node, int child);
   void set_input_filename(std::string filename, std::string extname);
@@ -26,3 +34,4 @@ public:
                        const unique_ptr<string>& code,
                        std::unordered_map<char, string>* huffman_encoding);
 };	
+#endif

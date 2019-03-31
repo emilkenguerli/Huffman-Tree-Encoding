@@ -34,13 +34,14 @@ int main(int argc, char* argv[])
     cout << "Input = " << input_file << endl;
     cout << "Output = " << output_file << endl;
 
-    HuffmanTree ht;
+    HuffmanTree* ht = new HuffmanTree(input_file, output_file);
 
-    ht.set_input_filename(input_file, ".hdr");
-    ht.set_output_filename(output_file);
+    //ht.set_input_filename(input_file, ".hdr");
+   // ht.set_output_filename(output_file);
     vector<CharFrequency> *s = new vector<CharFrequency>;
-    ht.encode(*s);
+    ht->encode(*s);
     delete s;
+	delete ht;
     return 0;
 }
 
