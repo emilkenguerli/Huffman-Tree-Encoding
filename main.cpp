@@ -19,8 +19,8 @@ static void show_usage(std::string name)
               << std::endl;
 }
 
-void del(void(*)()) {}
-void fun() {}
+//void del(void(*)()) {}
+//void fun() {}
 
 int main(int argc, char* argv[])
 {
@@ -34,11 +34,11 @@ int main(int argc, char* argv[])
     cout << "Input = " << input_file << endl;
     cout << "Output = " << output_file << endl;
 
-    HuffmanTree* ht = new HuffmanTree(input_file, output_file);
+    KNGEMI002::HuffmanTree* ht = new KNGEMI002::HuffmanTree(input_file, output_file);
 
     //ht.set_input_filename(input_file, ".hdr");
    // ht.set_output_filename(output_file);
-    vector<CharFrequency> *s = new vector<CharFrequency>;
+    vector<KNGEMI002::CharFrequency> *s = new vector<KNGEMI002::CharFrequency>;
     ht->encode(*s);
     delete s;
 	delete ht;

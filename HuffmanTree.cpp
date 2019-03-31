@@ -9,53 +9,47 @@
 #include "HuffmanTree.h"
 
 using std::make_unique;
-/*using std::priority_queue;
-using std::shared_ptr;
-using std::string;
-using std::unique_ptr;
-using std::unordered_map;
-using std::vector;
-*/
+
 // namespace is used in order to escape BinaryTreeNode symbol
 using namespace std;
 
-HuffmanTree::HuffmanTree(void) : extension(".hdr"), output_file("output"){}
+KNGEMI002::HuffmanTree::HuffmanTree(void) : extension(".hdr"), output_file("output"){}
 
-HuffmanTree::HuffmanTree(std::string inputfile,std::string outputfile){
+KNGEMI002::HuffmanTree::HuffmanTree(std::string inputfile,std::string outputfile){
 	this -> extension = ".hdr";
   	this -> input_file = inputfile;
 	this -> output_file = outputfile;
 }
 
-HuffmanTree::HuffmanTree(const HuffmanTree &hf2){
+KNGEMI002::HuffmanTree::HuffmanTree(const HuffmanTree &hf2){
 	this -> input_file = hf2.input_file;
 	this -> output_file = hf2.output_file;
 }
 
-HuffmanTree::HuffmanTree(HuffmanTree &&hf2){
+KNGEMI002::HuffmanTree::HuffmanTree(HuffmanTree &&hf2){
 	this -> input_file = hf2.input_file;
 	this -> output_file = hf2.output_file;
 	hf2.input_file = nullptr;
 	hf2.output_file = nullptr;
 }
 
-HuffmanTree& HuffmanTree::operator=(const HuffmanTree& hf){
+KNGEMI002::HuffmanTree& KNGEMI002::HuffmanTree::operator=(const HuffmanTree& hf){
 	HuffmanTree tmp(hf);
 	std::swap(this -> input_file, tmp.input_file);
 	std::swap(this -> output_file, tmp.output_file);
 	return *this;
 }
 
-HuffmanTree& HuffmanTree::operator=(HuffmanTree &&hf){
+KNGEMI002::HuffmanTree& KNGEMI002::HuffmanTree::operator=(HuffmanTree &&hf){
 	std::swap(this -> input_file, hf.input_file);
 	std::swap(this -> output_file, hf.output_file);
 	return *this;
 }
 
-HuffmanTree::~HuffmanTree() {
+KNGEMI002::HuffmanTree::~HuffmanTree() {
 }
 
-double HuffmanTree::encode(vector<CharFrequency> &symbols) {
+double KNGEMI002::HuffmanTree::encode(vector<CharFrequency> &symbols) {
   char c;
   unsigned char uc;
   std::ifstream in_file;
@@ -104,20 +98,12 @@ for(auto vite = symbols.begin(); vite != symbols.end(); ++vite) {
 
   cout << "size=" << candidates.size() << endl;
 
-  // use temporary queue to print out candidates
-/*  priority_queue<shared_ptr<HuffmanNode>, vector<shared_ptr<HuffmanNode>>, compare> temp = candidates;
-  while (!temp.empty()) {
-    std::cout << "candidates=" << temp.top()->charfreq->c << "Then="<< temp.top()->charfreq->freq << std::endl;
-    temp.pop();
-  }
-*/
   // Combining two nodes until there is only one node left.
   while (candidates.size() > 1) {
     shared_ptr<HuffmanNode> left = candidates.top();
     candidates.pop();
     shared_ptr<HuffmanNode> right = candidates.top();
     candidates.pop();
-    //candidates.emplace(new HuffmanNode{left->frequency + right->frequency, nullptr, left, right});
 	candidates.emplace(new HuffmanNode(left->frequency + right->frequency, nullptr, left, right));
   }
    
@@ -180,7 +166,7 @@ for (std::size_t i = 0; i < n / 8; ++i) {
   return 1;
 }
 
-void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
+void KNGEMI002::HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
                        const unique_ptr<string>& code,
                        std::unordered_map<char, string>* huffman_encoding) {
   if (binary_tree) {
@@ -198,18 +184,5 @@ void HuffmanTree::assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tre
     }
   }
 }
-
-
-/*void HuffmanTree::set_input_filename(std::string filename, std::string extname)
-{
-    input_file = filename;
-    extension = extname;
-}
-
-void HuffmanTree::set_output_filename(std::string filename)
-{
-    output_file = filename;
-}*/
-
 
 

@@ -8,23 +8,23 @@
 #include <limits>
 #include "HuffmanNode.h"
 
-HuffmanNode::HuffmanNode(void) : frequency(0), left(nullptr), right(nullptr){}
+KNGEMI002::HuffmanNode::HuffmanNode(void) : frequency(0), left(nullptr), right(nullptr){}
 
-HuffmanNode::HuffmanNode(double freq, const std::shared_ptr<CharFrequency>& cf, const std::shared_ptr<HuffmanNode>& lhs, const std::shared_ptr<HuffmanNode>& rhs){
+KNGEMI002::HuffmanNode::HuffmanNode(double freq, const std::shared_ptr<CharFrequency>& cf, const std::shared_ptr<HuffmanNode>& lhs, const std::shared_ptr<HuffmanNode>& rhs){
 	this -> frequency = freq;
 	this -> charfreq = cf;
 	this -> left = lhs;
 	this -> right = rhs;
 }
 
-HuffmanNode::HuffmanNode(const HuffmanNode &hf2){
+KNGEMI002::HuffmanNode::HuffmanNode(const HuffmanNode &hf2){
 	this -> frequency = hf2.frequency;
 	this -> charfreq = hf2.charfreq;
 	this -> left = hf2.left;
 	this -> right = hf2.right;
 }
 
-HuffmanNode::HuffmanNode(HuffmanNode &&hf2){
+KNGEMI002::HuffmanNode::HuffmanNode(HuffmanNode &&hf2){
 	this -> frequency = hf2.frequency;
 	this -> charfreq = hf2.charfreq;
 	this -> left = hf2.left;
@@ -35,7 +35,7 @@ HuffmanNode::HuffmanNode(HuffmanNode &&hf2){
 	hf2.right = nullptr;
 }
 
-HuffmanNode& HuffmanNode::operator=(const HuffmanNode& hf){
+KNGEMI002::HuffmanNode& KNGEMI002::HuffmanNode::operator=(const HuffmanNode& hf){
 	HuffmanNode tmp(hf);
 	std::swap(this -> frequency, tmp.frequency);
 	std::swap(this -> charfreq, tmp.charfreq);
@@ -44,7 +44,7 @@ HuffmanNode& HuffmanNode::operator=(const HuffmanNode& hf){
 	return *this;
 }
 
-HuffmanNode& HuffmanNode::operator=(HuffmanNode &&hf){
+KNGEMI002::HuffmanNode& KNGEMI002::HuffmanNode::operator=(HuffmanNode &&hf){
 	std::swap(this -> frequency, hf.frequency);
 	std::swap(this -> charfreq, hf.charfreq);
 	std::swap(this -> left, hf.left);
@@ -52,8 +52,8 @@ HuffmanNode& HuffmanNode::operator=(HuffmanNode &&hf){
 	return *this;
 }
 
-HuffmanNode::~HuffmanNode() {}
+KNGEMI002::HuffmanNode::~HuffmanNode() {}
 
-bool HuffmanNode::operator<(const std::shared_ptr<HuffmanNode>& rhs) const {
+bool KNGEMI002::HuffmanNode::operator<(const std::shared_ptr<HuffmanNode>& rhs) const {
   return this->frequency < rhs->frequency;
 }
