@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <bitset>
+#include <algorithm>
 #include "HuffmanNode.h"
 
 using namespace std;
@@ -33,6 +35,9 @@ namespace KNGEMI002 {
 	  void assign_huffman_codes(const shared_ptr<HuffmanNode>& binary_tree,
 						   const unique_ptr<string>& code,
 						   std::unordered_map<char, string>* huffman_encoding);
-	};	
+	  std::string read_bits(int &count, std::string file_name);
+  	  void write_bits(int count, std::string bitstring, std::string file_name);
+	};
+	
 }
 #endif

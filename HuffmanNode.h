@@ -8,7 +8,6 @@ namespace KNGEMI002 {
 	struct CharFrequency {
 	  char c;
 	  double freq;
-	//  std::string code;
 	};
 
 	class HuffmanNode {  //BinaryTree

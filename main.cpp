@@ -19,9 +19,6 @@ static void show_usage(std::string name)
               << std::endl;
 }
 
-//void del(void(*)()) {}
-//void fun() {}
-
 int main(int argc, char* argv[])
 {
     if (argc < 3 || argc > 3)
@@ -36,20 +33,9 @@ int main(int argc, char* argv[])
 
     KNGEMI002::HuffmanTree* ht = new KNGEMI002::HuffmanTree(input_file, output_file);
 
-    //ht.set_input_filename(input_file, ".hdr");
-   // ht.set_output_filename(output_file);
     vector<KNGEMI002::CharFrequency> *s = new vector<KNGEMI002::CharFrequency>;
     ht->encode(*s);
     delete s;
 	delete ht;
     return 0;
 }
-
-//  std::vector<std::string> args{argv + 1, argv + argc};
-//  std::vector<std::string> param_names{"symbols"};
-
-//  HuffmanEncodingWrapper(&param_names);
-
-//GenericTestMain(args, "huffman_coding.cc", "huffman_coding.tsv",
-//                         &HuffmanEncodingWrapper, DefaultComparator{},
-//                         param_names);
